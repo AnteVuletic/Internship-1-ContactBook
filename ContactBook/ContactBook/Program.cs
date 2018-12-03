@@ -74,17 +74,43 @@ namespace ContactBook
                                 break;
                             }
                         case 2:
-                            break;
+                            {
+                                
+                                break;
+                            }
                         case 3:
                             break;
                         case 4:
-                            break;
+                            {
+                                Console.WriteLine("Please enter the number you want to search: ");
+                                var numberInputed = Console.ReadLine();
+                                var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
+                                if (searchedDictionary.Count == 0)
+                                {
+                                    Console.WriteLine("Your dictionary does not contain an contact with this number.");
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                else
+                                {
+                                    PrintDirectory(searchedDictionary);
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                break;
+                            }
                         case 5:
                             break;
                         case 6:
                             {
-                                PrintDirectory(userDirectory);
-                                choiceForNavigatingMenu = 0;
+                                if(userDirectory.Count == 0)
+                                {
+                                    Console.WriteLine("There are no exsisting contacts.");
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                else
+                                {
+                                    PrintDirectory(userDirectory);
+                                    choiceForNavigatingMenu = 0;
+                                }       
                                 break;
                             }
                         default:
@@ -95,6 +121,16 @@ namespace ContactBook
               
 
             } while (choiceForNavigatingMenu != 7);
+        }
+        static Dictionary<string,Tuple<string,string,string>> SearchDictionaryByNumber(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string numberPassed)
+        {
+            var searchedDictionary = new Dictionary<string, Tuple<string, string, string>>();
+            foreach (var item in argDictionaryPassed)
+            {
+                if (item.Key == numberPassed)
+                    searchedDictionary.Add(item.Key, new Tuple<string, string, string>(item.Value.Item1, item.Value.Item2, item.Value.Item3));
+            }
+            return searchedDictionary;
         }
         static void PrintDirectory(Dictionary<string, Tuple<string, string, string>> argDirectoryPassed)
         {
