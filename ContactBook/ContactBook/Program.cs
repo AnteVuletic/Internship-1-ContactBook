@@ -48,9 +48,17 @@ namespace ContactBook
 
                                 if (numberInputed != "0")
                                 {
-                                    var returnedTuple = AddNewContact(numberInputed, tmpName, tmpSurname, tmpAddress);
-                                    userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
-                                    Console.WriteLine("Succesfully added contact to directory.");
+                                    if(SearchDictionaryByNumber(userDirectory,numberInputed).Count != 0)
+                                    {
+                                        var returnedTuple = AddNewContact(numberInputed, tmpName, tmpSurname, tmpAddress);
+                                        userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
+                                        Console.WriteLine("Succesfully added contact to directory.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("There's already an contact with that number.");
+                                    }
+                                    
                                     choiceForNavigatingMenu = 0;
                                 }
                                 else
