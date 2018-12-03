@@ -70,7 +70,7 @@ namespace ContactBook
                                         
                                         Console.Write("Value before modification:");
                                         PrintDirectory(searchedDictionary);
-                                        Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address]:");
+                                        Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address,phonenumber]:");
                                         var choiceEntered = Console.ReadLine();
                                         switch (choiceEntered)
                                         {
@@ -79,7 +79,7 @@ namespace ContactBook
                                                     Console.WriteLine("Please enter an new value for field name:");
                                                     var enteredValueForFieldName = Console.ReadLine();
                                                     userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldName, choiceEntered,numberInputed);
-                                                    Console.Write("Value after modification:");
+                                                    Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
                                                     break;
@@ -89,7 +89,7 @@ namespace ContactBook
                                                     Console.WriteLine("Please enter an new value for field surname:");
                                                     var enteredValueForFieldSurname = Console.ReadLine();
                                                     userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldSurname, choiceEntered,numberInputed);
-                                                    Console.Write("Value after modification:");
+                                                    Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
                                                     break;
@@ -99,7 +99,7 @@ namespace ContactBook
                                                     Console.WriteLine("Please enter an new value for field address:");
                                                     var enteredValueForFieldAddress = Console.ReadLine();
                                                     userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered,numberInputed);
-                                                    Console.Write("Value after modification:");
+                                                    Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
                                                     break;
@@ -109,7 +109,7 @@ namespace ContactBook
                                                     Console.WriteLine("Please enter an new value for field address:");
                                                     var enteredValueForFieldAddress = Console.ReadLine();
                                                     userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered, numberInputed);
-                                                    Console.Write("Value after modification:");
+                                                    Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
                                                     break;
@@ -135,7 +135,31 @@ namespace ContactBook
                                 break;
                             }
                         case 3:
-                            break;
+                            {
+                                Console.WriteLine("Please enter the number of the contact you wish to modify:");
+                                var numberInputed = TestNumberEntry();
+                                if (numberInputed != "0")
+                                {
+                                    var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
+                                    if (searchedDictionary.Count != 0)
+                                    {
+                                        Console.Write("The contact you'll be deleting is: ");
+                                        userDirectory = DeleteContact(userDirectory, numberInputed);
+                                        PrintDirectory(searchedDictionary);
+                                        choiceForNavigatingMenu = 0;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The contact you're trying to delete doesn't exsist.");
+                                    }
+                                }
+                                else
+                                {
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                break;
+                            }
+
                         case 4:
                             {
                                 Console.WriteLine("Please enter the number you want to search: ");
@@ -252,6 +276,19 @@ namespace ContactBook
             argSurnamePassed = CheckAndAdjustSurname(argSurnamePassed);
             argAddressPassed = CheckAndAdjustAddress(argAddressPassed);
             return new Tuple<string,Tuple<string,string,string>>(argKeyPassed,new Tuple<string,string,string>(argNamePassed,argSurnamePassed,argAddressPassed));
+        }
+        static Dictionary<string,Tuple<string,string,string>> DeleteContact(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string argKeyPassed)
+        {
+            var modifiedDictionary = new Dictionary<string, Tuple<string, string, string>>();
+            foreach (var item in argDictionaryPassed)
+            {
+                if(item.Key != argKeyPassed)
+                {
+                    var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                    modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                }
+            }
+            return modifiedDictionary;
         }
         static Dictionary<string, Tuple<string,string,string>> ModifyExistingContact(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string entryOfModification,string argChoicePicked,string argKeyPassed)
         {
