@@ -98,7 +98,23 @@ namespace ContactBook
                                 break;
                             }
                         case 5:
-                            break;
+                            {
+                                Console.WriteLine("Please enter name or part of name of the contact you're searching for:");
+                                var parameterInputed = Console.ReadLine();
+                                var searchedDictionary = SearchDictionaryByName(userDirectory,parameterInputed);
+                                if(searchedDictionary.Count == 0)
+                                {
+                                    Console.WriteLine("Your search result came up empty, there is no such contact in your directory.");
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                else
+                                {
+                                    PrintDirectory(searchedDictionary);
+                                    choiceForNavigatingMenu = 0;
+                                }
+                                break;
+                            }
+
                         case 6:
                             {
                                 if(userDirectory.Count == 0)
@@ -121,6 +137,16 @@ namespace ContactBook
               
 
             } while (choiceForNavigatingMenu != 7);
+        }
+        static Dictionary<string, Tuple<string, string, string>> SearchDictionaryByName(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string argSearchParameterPassed)
+        {
+            var searchedDictionary = new Dictionary<string, Tuple<string, string, string>>();
+            foreach (var item in argDictionaryPassed)
+            {
+                if (item.Value.Item1.Contains(argSearchParameterPassed) || item.Value.Item2.Contains(argSearchParameterPassed))
+                    searchedDictionary.Add(item.Key, new Tuple<string, string, string>(item.Value.Item1, item.Value.Item2, item.Value.Item3));
+            }
+            return searchedDictionary;
         }
         static Dictionary<string,Tuple<string,string,string>> SearchDictionaryByNumber(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string numberPassed)
         {
