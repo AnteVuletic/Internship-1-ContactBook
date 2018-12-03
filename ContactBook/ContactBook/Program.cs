@@ -60,7 +60,78 @@ namespace ContactBook
                             }
                         case 2:
                             {
-                                
+                                Console.WriteLine("Please enter the number of the contact you wish to modify:");
+                                var numberInputed = TestNumberEntry();
+                                if(numberInputed != "0")
+                                {
+                                    var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
+                                    if(searchedDictionary.Count != 0)
+                                    {
+                                        
+                                        Console.Write("Value before modification:");
+                                        PrintDirectory(searchedDictionary);
+                                        Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address]:");
+                                        var choiceEntered = Console.ReadLine();
+                                        switch (choiceEntered)
+                                        {
+                                            case "name":
+                                                {
+                                                    Console.WriteLine("Please enter an new value for field name:");
+                                                    var enteredValueForFieldName = Console.ReadLine();
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldName, choiceEntered,numberInputed);
+                                                    Console.Write("Value after modification:");
+                                                    PrintDirectory(userDirectory);
+                                                    choiceForNavigatingMenu = 0;
+                                                    break;
+                                                }
+                                            case "surname":
+                                                {
+                                                    Console.WriteLine("Please enter an new value for field surname:");
+                                                    var enteredValueForFieldSurname = Console.ReadLine();
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldSurname, choiceEntered,numberInputed);
+                                                    Console.Write("Value after modification:");
+                                                    PrintDirectory(userDirectory);
+                                                    choiceForNavigatingMenu = 0;
+                                                    break;
+                                                }
+                                            case "address":
+                                                {
+                                                    Console.WriteLine("Please enter an new value for field address:");
+                                                    var enteredValueForFieldAddress = Console.ReadLine();
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered,numberInputed);
+                                                    Console.Write("Value after modification:");
+                                                    PrintDirectory(userDirectory);
+                                                    choiceForNavigatingMenu = 0;
+                                                    break;
+                                                }
+                                            case "phonenumber":
+                                                {
+                                                    Console.WriteLine("Please enter an new value for field address:");
+                                                    var enteredValueForFieldAddress = Console.ReadLine();
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered, numberInputed);
+                                                    Console.Write("Value after modification:");
+                                                    PrintDirectory(userDirectory);
+                                                    choiceForNavigatingMenu = 0;
+                                                    break;
+                                                }
+                                            default:
+                                                {
+                                                    Console.WriteLine("You have not picked an valid field please retry:");
+                                                    choiceForNavigatingMenu = 2;
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("There's no such contact in your dictionary.");
+                                        choiceForNavigatingMenu = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    choiceForNavigatingMenu = 0;
+                                }
                                 break;
                             }
                         case 3:
@@ -182,6 +253,93 @@ namespace ContactBook
             argAddressPassed = CheckAndAdjustAddress(argAddressPassed);
             return new Tuple<string,Tuple<string,string,string>>(argKeyPassed,new Tuple<string,string,string>(argNamePassed,argSurnamePassed,argAddressPassed));
         }
+        static Dictionary<string, Tuple<string,string,string>> ModifyExistingContact(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string entryOfModification,string argChoicePicked,string argKeyPassed)
+        {
+            var modifiedDictionary = new Dictionary<string, Tuple<string, string, string>>();
+            switch (argChoicePicked)
+            {
+                case "name":
+                    {
+                        foreach (var item in argDictionaryPassed)
+                        {
+                            if (item.Key != argKeyPassed)
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+                            else
+                            {
+                                var tmpTuple = AddNewContact(item.Key, entryOfModification, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+                                
+                        }
+                        break;
+                    }
+                case "surname":
+                    {
+                        foreach (var item in argDictionaryPassed)
+                        {
+                            if (item.Key != argKeyPassed)
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+                            else
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, entryOfModification, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+
+                        }
+                        break;
+                    }
+                case "address":
+                    {
+                        foreach (var item in argDictionaryPassed)
+                        {
+                            if (item.Key != argKeyPassed)
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+                            else
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, entryOfModification);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+
+                        }
+                        break;
+                    }
+                case "phonenumber":
+                    {
+                        foreach (var item in argDictionaryPassed)
+                        {
+                            if (item.Key != argKeyPassed)
+                            {
+                                var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+                            else
+                            {
+                                var tmpTuple = AddNewContact(entryOfModification, item.Value.Item1, item.Value.Item2, item.Value.Item3);
+                                modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
+                            }
+
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("This shouldn't be possible");
+                        break;
+                    }
+                    
+            }
+            return modifiedDictionary;
+
+        }
         static string CheckAndAdjustNumber(string argNumberPassed)
         {
             if (argNumberPassed.Contains(' '))
@@ -210,6 +368,12 @@ namespace ContactBook
             if( argSurnamePassed.Contains(' '))
             {
                 argSurnamePassed.Trim(' ');
+            }
+            if (char.IsLower(argSurnamePassed[0]))
+            {
+                var tmpString = new StringBuilder(argSurnamePassed);
+                tmpString[0] = char.ToUpper(tmpString[0]);
+                argSurnamePassed = tmpString.ToString();
             }
             return argSurnamePassed;
         }
