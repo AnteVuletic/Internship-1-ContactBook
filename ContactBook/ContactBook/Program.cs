@@ -35,34 +35,19 @@ namespace ContactBook
                     {
                         case 1:
                             {
-                                string tmpNumberFirstInput, tmpNumberSecondInput, tmpName, tmpSurname, tmpAddress = " ";
+                                string tmpName, tmpSurname, tmpAddress = " ";
                                 Console.WriteLine("Please enter your name:");
                                 tmpName = Console.ReadLine();
                                 Console.WriteLine("Please enter your surname:");
                                 tmpSurname = Console.ReadLine();
                                 Console.WriteLine("Please enter your address:");
                                 tmpAddress = Console.ReadLine();
-                                do {
-                                    Console.WriteLine("Please enter your number:");
-                                    tmpNumberFirstInput = Console.ReadLine();
-                                    if(tmpNumberFirstInput != "0")
-                                    {
-                                        Console.WriteLine("Please re-enter your number:");
-                                        tmpNumberSecondInput = Console.ReadLine();
-                                        if (tmpNumberFirstInput != tmpNumberSecondInput)
-                                        {
-                                            Console.WriteLine("Numbers do not match. Please try again. Optionally opt out by typing in 0 as number.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        tmpNumberSecondInput = tmpNumberFirstInput;
-                                    }
-                                    
-                                } while (!tmpNumberFirstInput.Equals(tmpNumberSecondInput));
-                                if(tmpNumberFirstInput != "0")
+
+                                var numberInputed = TestNumberEntry();
+
+                                if(numberInputed != "0")
                                 {
-                                    var returnedTuple = AddNewContact(tmpNumberFirstInput,tmpName,tmpSurname,tmpAddress);
+                                    var returnedTuple = AddNewContact(numberInputed,tmpName,tmpSurname,tmpAddress);
                                     userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
                                     Console.WriteLine("Succesfully added contact to directory.");
                                     choiceForNavigatingMenu = 0;
@@ -137,6 +122,30 @@ namespace ContactBook
               
 
             } while (choiceForNavigatingMenu != 7);
+        }
+        static string TestNumberEntry()
+        {
+            string tmpNumberFirstInput, tmpNumberSecondInput = " ";
+            do
+            {
+                Console.WriteLine("Please enter your number:");
+                tmpNumberFirstInput = Console.ReadLine();
+                if (tmpNumberFirstInput != "0")
+                {
+                    Console.WriteLine("Please re-enter your number:");
+                    tmpNumberSecondInput = Console.ReadLine();
+                    if (tmpNumberFirstInput != tmpNumberSecondInput)
+                    {
+                        Console.WriteLine("Numbers do not match. Please try again. Optionally opt out by typing in 0 as number.");
+                    }
+                }
+                else
+                {
+                    tmpNumberSecondInput = tmpNumberFirstInput;
+                }
+
+            } while (!tmpNumberFirstInput.Equals(tmpNumberSecondInput));
+            return tmpNumberFirstInput;
         }
         static Dictionary<string, Tuple<string, string, string>> SearchDictionaryByName(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string argSearchParameterPassed)
         {
