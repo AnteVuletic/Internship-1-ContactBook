@@ -11,7 +11,7 @@ namespace ContactBook
         static void Main(string[] args)
         {
             var userDirectory = new Dictionary<string, Tuple<string, string, string>>();
-            var choiceForNavigatingMenu = 0 ;
+            var choiceForNavigatingMenu = 0;
             do
             {
                 if (choiceForNavigatingMenu == 0)
@@ -30,7 +30,8 @@ namespace ContactBook
                     Console.WriteLine("Your choice is:");
                     choiceForNavigatingMenu = int.Parse(Console.ReadLine());
                 }
-                else {
+                else
+                {
                     switch (choiceForNavigatingMenu)
                     {
                         case 1:
@@ -45,9 +46,9 @@ namespace ContactBook
 
                                 var numberInputed = TestNumberEntry();
 
-                                if(numberInputed != "0")
+                                if (numberInputed != "0")
                                 {
-                                    var returnedTuple = AddNewContact(numberInputed,tmpName,tmpSurname,tmpAddress);
+                                    var returnedTuple = AddNewContact(numberInputed, tmpName, tmpSurname, tmpAddress);
                                     userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
                                     Console.WriteLine("Succesfully added contact to directory.");
                                     choiceForNavigatingMenu = 0;
@@ -62,12 +63,12 @@ namespace ContactBook
                             {
                                 Console.WriteLine("Please enter the number of the contact you wish to modify:");
                                 var numberInputed = TestNumberEntry();
-                                if(numberInputed != "0")
+                                if (numberInputed != "0")
                                 {
                                     var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                    if(searchedDictionary.Count != 0)
+                                    if (searchedDictionary.Count != 0)
                                     {
-                                        
+
                                         Console.Write("Value before modification:");
                                         PrintDirectory(searchedDictionary);
                                         Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address,phonenumber]:");
@@ -78,7 +79,7 @@ namespace ContactBook
                                                 {
                                                     Console.WriteLine("Please enter an new value for field name:");
                                                     var enteredValueForFieldName = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldName, choiceEntered,numberInputed);
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldName, choiceEntered, numberInputed);
                                                     Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
@@ -88,7 +89,7 @@ namespace ContactBook
                                                 {
                                                     Console.WriteLine("Please enter an new value for field surname:");
                                                     var enteredValueForFieldSurname = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldSurname, choiceEntered,numberInputed);
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldSurname, choiceEntered, numberInputed);
                                                     Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
@@ -98,7 +99,7 @@ namespace ContactBook
                                                 {
                                                     Console.WriteLine("Please enter an new value for field address:");
                                                     var enteredValueForFieldAddress = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered,numberInputed);
+                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered, numberInputed);
                                                     Console.Write("Value after modification: ");
                                                     PrintDirectory(userDirectory);
                                                     choiceForNavigatingMenu = 0;
@@ -181,8 +182,8 @@ namespace ContactBook
                             {
                                 Console.WriteLine("Please enter name or part of name of the contact you're searching for:");
                                 var parameterInputed = Console.ReadLine();
-                                var searchedDictionary = SearchDictionaryByName(userDirectory,parameterInputed);
-                                if(searchedDictionary.Count == 0)
+                                var searchedDictionary = SearchDictionaryByName(userDirectory, parameterInputed);
+                                if (searchedDictionary.Count == 0)
                                 {
                                     Console.WriteLine("Your search result came up empty, there is no such contact in your directory.");
                                     choiceForNavigatingMenu = 0;
@@ -197,7 +198,7 @@ namespace ContactBook
 
                         case 6:
                             {
-                                if(userDirectory.Count == 0)
+                                if (userDirectory.Count == 0)
                                 {
                                     Console.WriteLine("There are no exsisting contacts.");
                                     choiceForNavigatingMenu = 0;
@@ -206,7 +207,7 @@ namespace ContactBook
                                 {
                                     PrintDirectory(userDirectory);
                                     choiceForNavigatingMenu = 0;
-                                }       
+                                }
                                 break;
                             }
                         default:
@@ -214,7 +215,7 @@ namespace ContactBook
                             break;
                     }
                 }
-              
+
 
             } while (choiceForNavigatingMenu != 7);
         }
@@ -252,7 +253,7 @@ namespace ContactBook
             }
             return searchedDictionary;
         }
-        static Dictionary<string,Tuple<string,string,string>> SearchDictionaryByNumber(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string numberPassed)
+        static Dictionary<string, Tuple<string, string, string>> SearchDictionaryByNumber(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string numberPassed)
         {
             var searchedDictionary = new Dictionary<string, Tuple<string, string, string>>();
             foreach (var item in argDictionaryPassed)
@@ -264,7 +265,8 @@ namespace ContactBook
         }
         static void PrintDirectory(Dictionary<string, Tuple<string, string, string>> argDirectoryPassed)
         {
-            foreach (var item in argDirectoryPassed)
+            //var sortedDictionary = from entry in argDirectoryPassed orderby entry.Value ascending select entry.Value.Item1;
+            foreach (var item in argDirectoryPassed.OrderBy((item)=> item.Value.Item2).ThenBy((item) => item.Value.Item1))
             {
                 Console.WriteLine($"{item.Key} : {item.Value.Item1} : {item.Value.Item2} : {item.Value.Item3}");
             }
@@ -275,14 +277,14 @@ namespace ContactBook
             argNamePassed = CheckAndAdjustName(argNamePassed);
             argSurnamePassed = CheckAndAdjustSurname(argSurnamePassed);
             argAddressPassed = CheckAndAdjustAddress(argAddressPassed);
-            return new Tuple<string,Tuple<string,string,string>>(argKeyPassed,new Tuple<string,string,string>(argNamePassed,argSurnamePassed,argAddressPassed));
+            return new Tuple<string, Tuple<string, string, string>>(argKeyPassed, new Tuple<string, string, string>(argNamePassed, argSurnamePassed, argAddressPassed));
         }
-        static Dictionary<string,Tuple<string,string,string>> DeleteContact(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string argKeyPassed)
+        static Dictionary<string, Tuple<string, string, string>> DeleteContact(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string argKeyPassed)
         {
             var modifiedDictionary = new Dictionary<string, Tuple<string, string, string>>();
             foreach (var item in argDictionaryPassed)
             {
-                if(item.Key != argKeyPassed)
+                if (item.Key != argKeyPassed)
                 {
                     var tmpTuple = AddNewContact(item.Key, item.Value.Item1, item.Value.Item2, item.Value.Item3);
                     modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
@@ -290,7 +292,7 @@ namespace ContactBook
             }
             return modifiedDictionary;
         }
-        static Dictionary<string, Tuple<string,string,string>> ModifyExistingContact(Dictionary<string,Tuple<string,string,string>> argDictionaryPassed,string entryOfModification,string argChoicePicked,string argKeyPassed)
+        static Dictionary<string, Tuple<string, string, string>> ModifyExistingContact(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string entryOfModification, string argChoicePicked, string argKeyPassed)
         {
             var modifiedDictionary = new Dictionary<string, Tuple<string, string, string>>();
             switch (argChoicePicked)
@@ -309,7 +311,7 @@ namespace ContactBook
                                 var tmpTuple = AddNewContact(item.Key, entryOfModification, item.Value.Item2, item.Value.Item3);
                                 modifiedDictionary.Add(tmpTuple.Item1, tmpTuple.Item2);
                             }
-                                
+
                         }
                         break;
                     }
@@ -372,7 +374,7 @@ namespace ContactBook
                         Console.WriteLine("This shouldn't be possible");
                         break;
                     }
-                    
+
             }
             return modifiedDictionary;
 
@@ -387,7 +389,7 @@ namespace ContactBook
         }
         static string CheckAndAdjustName(string argNamePassed)
         {
-            if(argNamePassed.Contains(' '))
+            if (argNamePassed.Contains(' '))
             {
                 argNamePassed.Trim(' ');
             }
@@ -397,12 +399,12 @@ namespace ContactBook
                 tmpString[0] = char.ToUpper(tmpString[0]);
                 argNamePassed = tmpString.ToString();
             }
-            
+
             return argNamePassed;
         }
         static string CheckAndAdjustSurname(string argSurnamePassed)
         {
-            if( argSurnamePassed.Contains(' '))
+            if (argSurnamePassed.Contains(' '))
             {
                 argSurnamePassed.Trim(' ');
             }
