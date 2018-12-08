@@ -133,7 +133,7 @@ namespace ContactBook
                                 }
                                 else
                                 {
-                                    PrintDirectory(searchedDictionary);
+                                    PrintDictionary(searchedDictionary);
                                 }
                                 choiceForNavigatingMenu = 0;
                                 break;
@@ -147,7 +147,7 @@ namespace ContactBook
                                 }
                                 else
                                 {
-                                    PrintDirectory(userDirectory);
+                                    PrintDictionary(userDirectory);
                                 }
                                 choiceForNavigatingMenu = 0;
                                 break;
@@ -209,7 +209,7 @@ namespace ContactBook
                 return null;
             }
         }
-        static void PrintDirectory(Dictionary<string, Tuple<string, string, string>> argDirectoryPassed)
+        static void PrintDictionary(Dictionary<string, Tuple<string, string, string>> argDirectoryPassed)
         {
             //var sortedDictionary = from entry in argDirectoryPassed orderby entry.Value ascending select entry.Value.Item1;
             foreach (var item in argDirectoryPassed.OrderBy((item)=> item.Value.Item2).ThenBy((item) => item.Value.Item1))
