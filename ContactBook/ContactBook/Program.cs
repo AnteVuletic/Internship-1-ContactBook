@@ -48,7 +48,7 @@ namespace ContactBook
 
                                 if (numberInputed != "0")
                                 {
-                                    if(SearchDictionaryByNumber(userDirectory,numberInputed) == null)
+                                    if(!userDirectory.ContainsKey(numberInputed))
                                     {
                                         var returnedTuple = AddNewContact(numberInputed, tmpName, tmpSurname, tmpAddress);
                                         userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
@@ -92,8 +92,7 @@ namespace ContactBook
                                 var numberInputed = TestNumberEntry();
                                 if (numberInputed != "0")
                                 {
-                                    var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                    if (searchedDictionary != null)
+                                    if (userDirectory.ContainsKey(numberInputed))
                                     {
                                         userDirectory = DeleteContact(userDirectory, numberInputed);
                                     }
