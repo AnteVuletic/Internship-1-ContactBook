@@ -68,72 +68,22 @@ namespace ContactBook
                                 var numberInputed = TestNumberEntry();
                                 if (numberInputed != "0")
                                 {
-                                    var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                    if (searchedDictionary != null)
+                                    if (userDirectory.ContainsKey(numberInputed))
                                     {
 
                                         Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address,phonenumber]:");
                                         var choiceEntered = Console.ReadLine();
-                                        switch (choiceEntered)
-                                        {
-                                            case "name":
-                                                {
-                                                    Console.WriteLine("Please enter an new value for field name:");
-                                                    var enteredValueForFieldName = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldName, choiceEntered, numberInputed);
-                                                    Console.Write("Value after modification: ");
-                                                    PrintDirectory(userDirectory);
-                                                    choiceForNavigatingMenu = 0;
-                                                    break;
-                                                }
-                                            case "surname":
-                                                {
-                                                    Console.WriteLine("Please enter an new value for field surname:");
-                                                    var enteredValueForFieldSurname = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldSurname, choiceEntered, numberInputed);
-                                                    Console.Write("Value after modification: ");
-                                                    PrintDirectory(userDirectory);
-                                                    choiceForNavigatingMenu = 0;
-                                                    break;
-                                                }
-                                            case "address":
-                                                {
-                                                    Console.WriteLine("Please enter an new value for field address:");
-                                                    var enteredValueForFieldAddress = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered, numberInputed);
-                                                    Console.Write("Value after modification: ");
-                                                    PrintDirectory(userDirectory);
-                                                    choiceForNavigatingMenu = 0;
-                                                    break;
-                                                }
-                                            case "phonenumber":
-                                                {
-                                                    Console.WriteLine("Please enter an new value for field address:");
-                                                    var enteredValueForFieldAddress = Console.ReadLine();
-                                                    userDirectory = ModifyExistingContact(userDirectory, enteredValueForFieldAddress, choiceEntered, numberInputed);
-                                                    Console.Write("Value after modification: ");
-                                                    PrintDirectory(userDirectory);
-                                                    choiceForNavigatingMenu = 0;
-                                                    break;
-                                                }
-                                            default:
-                                                {
-                                                    Console.WriteLine("You have not picked an valid field please retry:");
-                                                    choiceForNavigatingMenu = 2;
-                                                }
-                                                break;
-                                        }
+                                        Console.WriteLine($"Please enter an new value for field {choiceEntered}:");
+                                        var enteredValueOnConsole = Console.ReadLine();
+                                        userDirectory = ModifyExistingContact(userDirectory, enteredValueOnConsole, choiceEntered, numberInputed);                                                                       
+                                        
                                     }
                                     else
                                     {
                                         Console.WriteLine("There's no such contact in your dictionary.");
-                                        choiceForNavigatingMenu = 0;
                                     }
                                 }
-                                else
-                                {
-                                    choiceForNavigatingMenu = 0;
-                                }
+                                choiceForNavigatingMenu = 0;
                                 break;
                             }
                         case 3:
@@ -367,7 +317,7 @@ namespace ContactBook
                     }
                 default:
                     {
-                        Console.WriteLine("This shouldn't be possible");
+                        Console.WriteLine("This is not an valid choice.");
                         break;
                     }
 
