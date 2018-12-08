@@ -48,7 +48,7 @@ namespace ContactBook
 
                                 if (numberInputed != "0")
                                 {
-                                    if(SearchDictionaryByNumber(userDirectory,numberInputed).Count != 0)
+                                    if(SearchDictionaryByNumber(userDirectory,numberInputed) == null)
                                     {
                                         var returnedTuple = AddNewContact(numberInputed, tmpName, tmpSurname, tmpAddress);
                                         userDirectory.Add(returnedTuple.Item1, returnedTuple.Item2);
@@ -69,11 +69,9 @@ namespace ContactBook
                                 if (numberInputed != "0")
                                 {
                                     var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                    if (searchedDictionary.Count != 0)
+                                    if (searchedDictionary != null)
                                     {
 
-                                        Console.Write("Value before modification:");
-                                        PrintDirectory(searchedDictionary);
                                         Console.WriteLine("Please enter which value you would like to modify[choices: name,surname,address,phonenumber]:");
                                         var choiceEntered = Console.ReadLine();
                                         switch (choiceEntered)
@@ -145,11 +143,9 @@ namespace ContactBook
                                 if (numberInputed != "0")
                                 {
                                     var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                    if (searchedDictionary.Count != 0)
+                                    if (searchedDictionary != null)
                                     {
-                                        Console.Write("The contact you'll be deleting is: ");
                                         userDirectory = DeleteContact(userDirectory, numberInputed);
-                                        PrintDirectory(searchedDictionary);
                                     }
                                     else
                                     {
@@ -165,13 +161,13 @@ namespace ContactBook
                                 Console.WriteLine("Please enter the number you want to search: ");
                                 var numberInputed = Console.ReadLine();
                                 var searchedDictionary = SearchDictionaryByNumber(userDirectory, numberInputed);
-                                if (searchedDictionary.Count == 0)
+                                if (searchedDictionary == null)
                                 {
                                     Console.WriteLine("Your dictionary does not contain an contact with this number.");
                                 }
                                 else
                                 {
-                                    PrintDirectory(searchedDictionary);
+                                    Console.WriteLine($"{searchedDictionary.Item1} : {searchedDictionary.Item2}");
                                 }
                                 choiceForNavigatingMenu = 0;
                                 break;
@@ -207,7 +203,10 @@ namespace ContactBook
                                 break;
                             }
                         default:
-                            Console.WriteLine("You have picked an invalid menu option.");
+                            {
+                                Console.WriteLine("You have picked an invalid menu option.");
+                                choiceForNavigatingMenu = 0;
+                            }
                             break;
                     }
                 }
@@ -236,7 +235,7 @@ namespace ContactBook
                     tmpNumberSecondInput = tmpNumberFirstInput;
                 }
 
-            } while (!tmpNumberFirstInput.Equals(tmpNumberSecondInput));
+            } while (!(tmpNumberFirstInput == tmpNumberSecondInput));
             return tmpNumberFirstInput;
         }
         static Dictionary<string, Tuple<string, string, string>> SearchDictionaryByName(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string argSearchParameterPassed)
@@ -249,15 +248,16 @@ namespace ContactBook
             }
             return searchedDictionary;
         }
-        static Dictionary<string, Tuple<string, string, string>> SearchDictionaryByNumber(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string numberPassed)
+        static Tuple<string, Tuple<string, string, string>> SearchDictionaryByNumber(Dictionary<string, Tuple<string, string, string>> argDictionaryPassed, string numberPassed)
         {
-            var searchedDictionary = new Dictionary<string, Tuple<string, string, string>>();
-            foreach (var item in argDictionaryPassed)
+            if(argDictionaryPassed.ContainsKey(numberPassed))
             {
-                if (item.Key == numberPassed)
-                    searchedDictionary.Add(item.Key, new Tuple<string, string, string>(item.Value.Item1, item.Value.Item2, item.Value.Item3));
+                return new Tuple<string, Tuple<string, string, string>>(numberPassed, new Tuple<string, string, string>(argDictionaryPassed[numberPassed].Item1, argDictionaryPassed[numberPassed].Item2, argDictionaryPassed[numberPassed].Item3));
             }
-            return searchedDictionary;
+            else
+            {
+                return null;
+            }
         }
         static void PrintDirectory(Dictionary<string, Tuple<string, string, string>> argDirectoryPassed)
         {
@@ -270,8 +270,8 @@ namespace ContactBook
         static Tuple<string, Tuple<string, string, string>> AddNewContact(string argKeyPassed, string argNamePassed, string argSurnamePassed, string argAddressPassed)
         {
             argKeyPassed = CheckAndAdjustNumber(argKeyPassed);
-            argNamePassed = CheckAndAdjustName(argNamePassed);
-            argSurnamePassed = CheckAndAdjustSurname(argSurnamePassed);
+            argNamePassed = CheckAndAdjustInput(argNamePassed);
+            argSurnamePassed = CheckAndAdjustInput(argSurnamePassed);
             argAddressPassed = CheckAndAdjustAddress(argAddressPassed);
             return new Tuple<string, Tuple<string, string, string>>(argKeyPassed, new Tuple<string, string, string>(argNamePassed, argSurnamePassed, argAddressPassed));
         }
@@ -383,34 +383,20 @@ namespace ContactBook
             }
             return argNumberPassed;
         }
-        static string CheckAndAdjustName(string argNamePassed)
+        static string CheckAndAdjustInput(string argInputPassed)
         {
-            if (argNamePassed.Contains(' '))
+            if (argInputPassed.Contains(' '))
             {
-                argNamePassed.Trim(' ');
+                argInputPassed.Trim(' ');
             }
-            if (char.IsLower(argNamePassed[0]))
+            if (char.IsLower(argInputPassed[0]))
             {
-                var tmpString = new StringBuilder(argNamePassed);
+                var tmpString = new StringBuilder(argInputPassed);
                 tmpString[0] = char.ToUpper(tmpString[0]);
-                argNamePassed = tmpString.ToString();
+                argInputPassed = tmpString.ToString();
             }
 
-            return argNamePassed;
-        }
-        static string CheckAndAdjustSurname(string argSurnamePassed)
-        {
-            if (argSurnamePassed.Contains(' '))
-            {
-                argSurnamePassed.Trim(' ');
-            }
-            if (char.IsLower(argSurnamePassed[0]))
-            {
-                var tmpString = new StringBuilder(argSurnamePassed);
-                tmpString[0] = char.ToUpper(tmpString[0]);
-                argSurnamePassed = tmpString.ToString();
-            }
-            return argSurnamePassed;
+            return argInputPassed;
         }
         static string CheckAndAdjustAddress(string argAddressPassed)
         {
@@ -426,4 +412,3 @@ namespace ContactBook
         }
     }
 }
-
