@@ -58,13 +58,8 @@ namespace ContactBook
                                     {
                                         Console.WriteLine("There's already an contact with that number.");
                                     }
-                                    
-                                    choiceForNavigatingMenu = 0;
                                 }
-                                else
-                                {
                                     choiceForNavigatingMenu = 0;
-                                }
                                 break;
                             }
                         case 2:
@@ -155,17 +150,13 @@ namespace ContactBook
                                         Console.Write("The contact you'll be deleting is: ");
                                         userDirectory = DeleteContact(userDirectory, numberInputed);
                                         PrintDirectory(searchedDictionary);
-                                        choiceForNavigatingMenu = 0;
                                     }
                                     else
                                     {
                                         Console.WriteLine("The contact you're trying to delete doesn't exsist.");
                                     }
                                 }
-                                else
-                                {
                                     choiceForNavigatingMenu = 0;
-                                }
                                 break;
                             }
 
@@ -177,13 +168,12 @@ namespace ContactBook
                                 if (searchedDictionary.Count == 0)
                                 {
                                     Console.WriteLine("Your dictionary does not contain an contact with this number.");
-                                    choiceForNavigatingMenu = 0;
                                 }
                                 else
                                 {
                                     PrintDirectory(searchedDictionary);
-                                    choiceForNavigatingMenu = 0;
                                 }
+                                choiceForNavigatingMenu = 0;
                                 break;
                             }
                         case 5:
@@ -194,13 +184,12 @@ namespace ContactBook
                                 if (searchedDictionary.Count == 0)
                                 {
                                     Console.WriteLine("Your search result came up empty, there is no such contact in your directory.");
-                                    choiceForNavigatingMenu = 0;
                                 }
                                 else
                                 {
                                     PrintDirectory(searchedDictionary);
-                                    choiceForNavigatingMenu = 0;
                                 }
+                                choiceForNavigatingMenu = 0;
                                 break;
                             }
 
@@ -209,13 +198,12 @@ namespace ContactBook
                                 if (userDirectory.Count == 0)
                                 {
                                     Console.WriteLine("There are no exsisting contacts.");
-                                    choiceForNavigatingMenu = 0;
                                 }
                                 else
                                 {
                                     PrintDirectory(userDirectory);
-                                    choiceForNavigatingMenu = 0;
                                 }
+                                choiceForNavigatingMenu = 0;
                                 break;
                             }
                         default:
